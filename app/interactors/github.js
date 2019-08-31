@@ -17,12 +17,15 @@ const {
 } = require('../services/github/branches');
 const { addUser } = require('../services/github/organization');
 
+const { createLabel: addLabelToRepoGithub, DEFAULT_LABEL } = require('../services/github/labels');
+
 const execDefaultRepositoryActions = ({ repositoryName }) =>
   Promise.all([
     addDefaultTeamsToRepository({ repositoryName }),
     createBranchFromMaster({ repositoryName, ...DEVELOPMENT_BRANCH }),
     createBranchFromMaster({ repositoryName, ...STAGE_BRANCH }),
-    updateBranchProtection({ repositoryName, ...MASTER_BRANCH })
+    updateBranchProtection({ repositoryName, ...MASTER_BRANCH }),
+    addLabelToRepoGithub({ repositoryName, ...DEFAULT_LABEL })
   ]);
 
 const createRepository = ({ repositoryName, isPrivate }) =>
@@ -45,6 +48,9 @@ const addCodeownersToRepo = (repositoryName, codeowners) =>
 
 const deleteTeam = teamId => deleteTeamGithub({ teamId }).then(resp => resp.data);
 
+const addLabelToRepo = (repositoryName, labelName, labelColor, labelDescription) =>
+  addLabelToRepoGithub({ repositoryName, labelName, labelColor, labelDescription }).then(resp => resp.data);
+
 module.exports = {
   createRepository,
   getRepositories,
@@ -54,5 +60,6 @@ module.exports = {
   addMemberToTeam,
   addCodeownersToRepo,
   deleteTeam,
+  addLabelToRepo,
   addUser
 };

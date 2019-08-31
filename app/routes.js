@@ -3,7 +3,8 @@ const {
   addTeamToRepo,
   getRepositories,
   addCodeownersToRepo,
-  addUserToOrganization
+  addUserToOrganization,
+  addLabelToRepo
 } = require('./controllers/github');
 const { getTeams, createTeam, addMembersToTeam, deleteTeam } = require('./controllers/teams');
 const { healthCheck } = require('./controllers/healthCheck');
@@ -21,6 +22,8 @@ exports.init = app => {
   app.post('/repositories/:repoName/teams', addTeamToRepo);
 
   app.post('/repositories/:repoName/codeowners', addCodeownersToRepo);
+
+  app.post('/repositories/:repoName/label', addLabelToRepo);
 
   app.get('/teams', getTeams);
   app.post('/teams', createTeam);

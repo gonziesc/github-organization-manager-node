@@ -3,6 +3,7 @@ const {
   addTeamToRepo: addTeamToRepoGithub,
   getRepositories: getRepositoriesGithub,
   addCodeownersToRepo: addCodeownersToRepoGithub,
+  addLabelToRepo: addLabelToRepoGithub,
   addUser
 } = require('../interactors/github');
 
@@ -43,11 +44,21 @@ const getRepositories = (req, res) =>
 const addCodeownersToRepo = (req, res) =>
   addCodeownersToRepoGithub(req.params.repoName, req.body.codeowners).then(resp => res.send(resp));
 
+const addLabelToRepo = (req, res) =>
+  addLabelToRepoGithub(
+    req.params.repoName,
+    req.body.labelName,
+    req.body.labelColor,
+    req.body.labelDescription
+  ).then(resp => res.send(resp));
+
 const addUserToOrganization = (req, res) => addUser(req.params.username).then(resp => res.send(resp));
+
 module.exports = {
   createRepository,
   addTeamToRepo,
   getRepositories,
   addCodeownersToRepo,
-  addUserToOrganization
+  addUserToOrganization,
+  addLabelToRepo
 };
